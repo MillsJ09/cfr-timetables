@@ -4,31 +4,75 @@
   <meta charset="UTF-8">
   <title>Timetables</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    h1 { margin-bottom: 15px; }
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    h1 { text-align: center; margin-bottom: 30px; }
     .timetable {
-      margin: 10px 0;
-      padding: 10px;
+      margin: 15px 0;
+      padding: 15px;
       border: 1px solid #ddd;
       border-radius: 8px;
+      box-shadow: 1px 1px 4px rgba(0,0,0,0.1);
     }
-    a { margin-right: 15px; }
+    .timetable h2 { margin: 0 0 10px; font-size: 1.2em; }
+    .links a {
+      margin-right: 20px;
+      text-decoration: none;
+      color: white;
+      background: #0073e6;
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+    .links a:hover { background: #005bb5; }
   </style>
 </head>
 <body>
   <h1>Downloadable Timetables</h1>
+  <div id="list"></div>
 
-  <div class="timetable">
-    <h2>Bus Summer 2025</h2>
-    <a href="timetables/bus-summer-2025.pdf" target="_blank">View Online</a>
-    <a href="timetables/bus-summer-2025.pdf" download>Download</a>
-  </div>
+  <script>
+    async function loadTimetables() {
+      try {
+        // Fetch the file list from the timetables/ directory
+        const response = await fetch("timetables/");
+        const text = await response.text();
 
-  <div class="timetable">
-    <h2>Ferry Winter 2025</h2>
-    <a href="timetables/ferry-winter-2025.pdf" target="_blank">View Online</a>
-    <a href="timetables/ferry-winter-2025.pdf" download>Download</a>
-  </div>
+        // Parse out the PDF filenames (GitHub Pages renders directory as HTML)
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, "text/html");
+        const links = [...doc.querySelectorAll("a")];
 
+        // Filter PDF files only
+        const pdfs = links
+          .map(a => a.getAttribute("href"))
+          .filter(href => href && href.endsWith(".pdf"));
+
+        const list = document.getElementById("list");
+
+        if (pdfs.length === 0) {
+          list.innerHTML = "<p>No timetables uploaded yet.</p>";
+          return;
+        }
+
+        // Create timetable cards
+        pdfs.forEach(file => {
+          const name = file.replace(/^.*[\\/]/, "").replace(".pdf", "").replace(/-/g, " ");
+          const div = document.createElement("div");
+          div.className = "timetable";
+          div.innerHTML = `
+            <h2>${name}</h2>
+            <div class="links">
+              <a href="timetables/${file}" target="_blank">View Online</a>
+              <a href="timetables/${file}" download>Download</a>
+            </div>
+          `;
+          list.appendChild(div);
+        });
+      } catch (err) {
+        document.getElementById("list").innerHTML = "<p>Unable to load timetables.</p>";
+      }
+    }
+
+    loadTimetables();
+  </script>
 </body>
 </html>
