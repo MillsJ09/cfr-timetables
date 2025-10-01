@@ -8,6 +8,9 @@ Created and maintained by **MillsJ09**.
 ## About Us / Links
 Founded in 1964, Condor has connected the Channel Islands of Guernsey and Jersey with the UK and France (in addition to a short-lived link with Sark). In 2025, MillsJ09 founded Condor Ferries Roblox with the aim to become the most realistic operator in the ro-maritime space. Our team has over 16 years of travel experience with Condor Roblox in addition to real staff members.
 
+[Discord Server](https://discord.gg/ZMvrnh3zQB)
+[Roblox Group](https://www.roblox.com/communities/36017920/Condor-Ferries-LTD)
+
 ## All rights reserved
 This design and its contents may not be copied, used, modified, or distributed without prior permission from **MillsJ09**.  
 
