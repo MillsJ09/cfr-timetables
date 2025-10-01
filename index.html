@@ -12,17 +12,14 @@
 
   <style>
     /* Light-theme tokens (use purple accents while keeping surfaces white) */
-    :root{
-      --bg: #ffffff;                   /* page surface remains white */
-      --surface: #ffffff;              /* card surface stays white for contrast */
-      --muted-bg: linear-gradient(180deg, rgba(62,62,99,0.04), rgba(255,255,255,0.0)); /* subtle purple wash at top */
-      --text: #3E3E63;                 /* purple text */
-      --accent: #C5388C;               /* pink accent */
-      --gold: #DEA92C;                 /* gold */
-      --card-radius: 12px;
-      --btn-size: 48px;
-      --shadow: 0 10px 26px rgba(62,62,99,0.08);
-      --transition: 220ms cubic-bezier(.2,.9,.3,1);
+    :root[data-theme="light"]{
+      --bg: #3E3E63;        /* purple background */
+      --surface: rgba(255,255,255,0.04);
+      --muted-bg: rgba(250,250,250,0.06);
+      --text: #f6f1fb;
+      --accent: #ff9ccf;
+      --gold: #e6c25b;
+      --shadow: 0 12px 30px rgba(0,0,0,0.6);
       color-scheme: light;
     }
 
