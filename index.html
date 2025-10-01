@@ -8,23 +8,35 @@
   <!-- Poppins font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Basic meta for GitHub Pages caching friendliness -->
-  <meta name="description" content="Condor Ferries style monthly sailing timetables - view or download PDF files.">
+  <meta name="description" content="Sailing Timetables - monthly PDF timetables">
 
   <style>
-    /* ===== Theme tokens (easy to tweak) ===== */
+    /* ===== Theme tokens (custom palette) ===== */
     :root{
-      --navy-900: #002f4b;    /* deep navy */
-      --navy-700: #024b6b;    /* mid navy */
-      --gold-500: #f6b82d;    /* golden yellow */
-      --white: #ffffff;
-      --muted: #eef6fb;
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --muted-bg: #fbfbff;
+      --text: #3E3E63;      /* purple */
+      --accent: #C5388C;    /* pink */
+      --gold: #DEA92C;      /* gold */
       --card-radius: 14px;
       --btn-size: 48px;
-      --shadow: 0 8px 20px rgba(2, 41, 60, 0.12);
-      --glass: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      --shadow: 0 10px 26px rgba(62,62,99,0.08);
       --transition: 220ms cubic-bezier(.2,.9,.3,1);
-      font-synthesis: none;
+      --glass: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      color-scheme: light;
+    }
+
+    /* Dark theme tokens */
+    :root[data-theme="dark"]{
+      --bg: #0c0b12;
+      --surface: #0f1020;
+      --muted-bg: #07101a;
+      --text: #e9e6f3;
+      --accent: #ff9ccf;
+      --gold: #e6c25b;
+      --shadow: 0 12px 30px rgba(0,0,0,0.6);
+      color-scheme: dark;
     }
 
     /* ===== Reset and base ===== */
@@ -33,62 +45,82 @@
     body{
       margin:0;
       font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: linear-gradient(180deg, var(--muted), #f8fbfd);
-      color: var(--navy-900);
+      background: linear-gradient(180deg, var(--muted-bg), var(--bg));
+      color: var(--text);
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
       line-height:1.35;
-      padding: 32px;
+      padding: 28px;
     }
 
     /* ===== Header ===== */
-    .site-header{
+    .page {
+      max-width:1100px;
+      margin:0 auto;
+      position:relative;
+    }
+
+    .topbar{
       display:flex;
       align-items:center;
-      gap:18px;
-      margin:0 auto 26px;
-      max-width:1100px;
+      justify-content:flex-end;
+      gap:12px;
+      margin-bottom:12px;
     }
-    .logo{
+
+    .logo {
       width:64px;
       height:64px;
-      border-radius:14px;
+      border-radius:12px;
       display:grid;
       place-items:center;
       background:
-        radial-gradient(circle at 30% 30%, rgba(246,184,45,0.14), transparent 30%),
-        linear-gradient(135deg, var(--navy-700), var(--navy-900));
+        radial-gradient(circle at 25% 25%, rgba(197,56,140,0.06), transparent 28%),
+        linear-gradient(180deg, rgba(62,62,99,0.9), rgba(62,62,99,0.75));
       box-shadow: var(--shadow);
       flex:0 0 64px;
     }
-    /* Nautical wave mark inside logo (SVG via background) */
+
+    /* Replace the SVG below with your logo if you have one */
     .logo svg{width:44px;height:44px;display:block;transform:translateY(-2px);}
 
-    .title-block{
-      display:flex;
-      flex-direction:column;
+    /* Title block centered below topbar */
+    .site-title-wrap{
+      text-align:center;
+      margin: 6px 0 22px;
     }
     .site-title{
-      font-size:20px;
+      font-size:22px;
       font-weight:700;
       letter-spacing:0.2px;
-      color:var(--navy-900);
       margin:0;
+      color:var(--text);
     }
     .site-sub{
-      margin-top:4px;
+      margin-top:6px;
       font-size:13px;
-      color:#234a5f;
-      opacity:0.85;
+      color:var(--text);
+      opacity:0.78;
       font-weight:500;
     }
 
-    /* ===== Container / grid ===== */
-    .container{
-      max-width:1100px;
-      margin:0 auto;
+    /* Theme toggle */
+    .theme-toggle{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--text);
+      padding:8px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-weight:600;
+      transition: transform var(--transition), background var(--transition), color var(--transition);
     }
+    .theme-toggle:active{ transform: scale(.98) }
 
+    /* ===== Grid and cards ===== */
     .grid{
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -96,11 +128,10 @@
       align-items:start;
     }
 
-    /* ===== Card ===== */
     .card{
-      background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+      background: linear-gradient(180deg, var(--surface) 0%, rgba(255,255,255,0.02) 100%);
       border-radius: var(--card-radius);
-      padding:18px;
+      padding:16px;
       box-shadow: var(--shadow);
       transition: transform var(--transition), box-shadow var(--transition);
       display:flex;
@@ -109,28 +140,27 @@
       min-height:150px;
       position:relative;
       overflow:hidden;
-      border: 1px solid rgba(2,41,60,0.04);
+      border: 1px solid rgba(0,0,0,0.04);
     }
     .card:hover{
       transform: translateY(-6px);
-      box-shadow: 0 18px 36px rgba(2,41,60,0.12);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
     }
 
     .month{
-      font-weight:600;
+      font-weight:700;
       font-size:16px;
-      color:var(--navy-900);
-      margin:6px 0 12px;
+      color:var(--text);
+      margin:6px 0 8px;
     }
 
     .tagline{
       font-size:13px;
-      color:#2f576a;
-      opacity:0.9;
-      margin-bottom: 12px;
+      color:var(--text);
+      opacity:0.8;
+      margin-bottom:12px;
     }
 
-    /* Action row: view & download */
     .actions{
       display:flex;
       gap:12px;
@@ -147,26 +177,25 @@
       border: none;
       cursor:pointer;
       transition: transform var(--transition), box-shadow var(--transition);
-      box-shadow: 0 6px 18px rgba(2,41,60,0.08);
-      background: var(--white);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+      background: var(--bg);
       flex:0 0 var(--btn-size);
     }
     .btn-circle:active{ transform: scale(.98) }
     .btn-circle:hover{ transform: translateY(-4px) }
 
-    /* View button style (left) */
     .btn-view{
-      background: linear-gradient(180deg, rgba(2,75,107,0.95), rgba(2,59,86,0.95));
-      color:var(--white);
+      background: linear-gradient(180deg, rgba(62,62,99,0.95), rgba(62,62,99,0.78));
+      color:#fff;
+      box-shadow: 0 10px 24px rgba(62,62,99,0.12);
     }
 
-    /* Download button style (right) - golden */
     .btn-download{
-      background: linear-gradient(180deg, #ffda7a, var(--gold-500));
-      color: var(--navy-900);
+      background: linear-gradient(180deg, var(--gold), #f0c85b);
+      color:var(--text);
+      box-shadow: 0 10px 24px rgba(222,169,44,0.12);
     }
 
-    /* Button labels (for larger screens) */
     .btn-labels{
       display:flex;
       flex-direction:column;
@@ -175,156 +204,178 @@
       font-size:13px;
     }
     .btn-text{
-      font-weight:600;
-      color:var(--navy-900);
+      font-weight:700;
+      color:var(--text);
     }
     .btn-sub{
       font-weight:400;
-      color:#2b596e;
+      color:var(--text);
       font-size:12px;
-      opacity:0.9;
+      opacity:0.86;
     }
 
-    /* Responsive: hide labels on small screens */
     @media (max-width:480px){
-      body{padding:20px}
-      .site-header{gap:12px;margin-bottom:18px}
+      body{padding:18px}
       .logo{width:54px;height:54px}
       .site-title{font-size:18px}
       .btn-labels{display:none}
-      .card{padding:14px}
+      .card{padding:12px}
       .month{font-size:15px}
     }
 
-    /* Icon sizing */
-    .icon{
-      width:22px;
-      height:22px;
-      display:block;
-    }
+    .icon{ width:20px;height:20px;display:block; }
 
-    /* subtle corner wave overlay for branding */
     .card::after{
       content:"";
       position:absolute;
-      right:-40px;
-      top:-30px;
-      width:140px;
-      height:140px;
+      right:-36px;
+      top:-28px;
+      width:120px;
+      height:120px;
       background:
-        radial-gradient(circle at 30% 30%, rgba(246,184,45,0.07), transparent 28%),
-        linear-gradient(135deg, rgba(2,75,107,0.08), transparent 60%);
-      transform: rotate(12deg);
+        radial-gradient(circle at 30% 30%, rgba(197,56,140,0.05), transparent 28%),
+        linear-gradient(135deg, rgba(62,62,99,0.06), transparent 60%);
+      transform: rotate(10deg);
       border-radius: 50%;
       pointer-events:none;
     }
 
-    /* Small accessible helper */
     .sr-only{
       position:absolute!important;
       height:1px;width:1px;overflow:hidden;
       clip:rect(1px,1px,1px,1px);white-space:nowrap;
     }
-
   </style>
 </head>
 <body>
-  <div class="container">
-    <header class="site-header" role="banner">
-      <div class="logo" aria-hidden="true">
-        <!-- Simple SVG wave / sail mark -->
-        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs></defs>
-          <path d="M6 44c10-12 28-12 38 0" stroke="#FFD36D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M14 36c6-8 18-8 24 0" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
-          <path d="M44 14c0 6-4 12-10 12s-10-6-10-12 4-10 10-10 10 4 10 10z" fill="#fff" opacity="0.08"/>
+  <div class="page">
+    <header class="topbar" role="banner">
+      <!-- Theme toggle on the left of the topbar could be moved; topbar is aligned to the right so toggle and logo appear right aligned -->
+      <button id="themeToggle" class="theme-toggle" aria-pressed="false" title="Toggle light and dark mode">
+        <!-- simple moon/sun icon via inline SVG; color adapts -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="display:block">
+          <path id="themeIconPath" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="currentColor"></path>
         </svg>
-      </div>
+        <span id="themeToggleLabel" style="font-size:13px;font-weight:600">Theme</span>
+      </button>
 
-      <div class="title-block">
-        <h1 class="site-title">Sailing Timetables</h1>
-        <div class="site-sub">Official monthly sailing timetable PDFs</div>
+      <!-- Logo placed at the far right -->
+      <div class="logo" aria-hidden="true">
+        <!-- Replace this SVG with your logo if you have an image or SVG file -->
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M6 44c10-12 28-12 38 0" stroke="#DEA92C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14 36c6-8 18-8 24 0" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+          <g transform="translate(36,10)">
+            <path d="M0 0c0 4-2.6 7.3-6 7.3S-12 4-12 0s2.6-6.6 6-6.6S0-4.2 0 0z" fill="#C5388C" opacity="0.12"/>
+          </g>
+        </svg>
       </div>
     </header>
 
+    <div class="site-title-wrap">
+      <h1 class="site-title">Sailing Timetables</h1>
+      <div class="site-sub">Official monthly sailing timetable PDFs</div>
+    </div>
+
     <main>
       <section class="grid" id="timetableGrid" aria-live="polite">
-        <!-- Cards are generated by JavaScript for easy maintenance -->
+        <!-- Cards are generated by JavaScript -->
       </section>
     </main>
   </div>
 
   <script>
     /* ===== Timetables data
-       Add months here. Keep files in the same repo (e.g., /timetables/Oct25.pdf)
-       Example entry:
+       Edit these entries to point to your PDFs.
+       Example:
          { file: 'timetables/Oct25.pdf', label: 'October 2025' }
     ===== */
     const timetables = [
-      { file: 'Timetables/Oct25.pdf', label: 'October 2025' },
-      { file: 'Timetables/Nov25.pdf', label: 'November 2025' },
-      { file: 'Timetables/Dec25.pdf', label: 'December 2025' }
+      { file: 'Oct25.pdf', label: 'October 2025' },
+      { file: 'Nov25.pdf', label: 'November 2025' },
+      { file: 'Dec25.pdf', label: 'December 2025' }
     ];
 
-    /* Utility: sanitize text for HTML insertion */
+    /* ===== Theme handling ===== */
+    const root = document.documentElement;
+    const stored = localStorage.getItem('site-theme'); // 'light' | 'dark' | null
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = stored || (prefersDark ? 'dark' : 'light');
+
+    function applyTheme(name){
+      if (name === 'dark') {
+        root.setAttribute('data-theme', 'dark');
+        document.getElementById('themeToggle').setAttribute('aria-pressed','true');
+      } else {
+        root.removeAttribute('data-theme');
+        document.getElementById('themeToggle').setAttribute('aria-pressed','false');
+      }
+      // update label/icon
+      document.getElementById('themeToggleLabel').textContent = (name === 'dark') ? 'Dark' : 'Light';
+      localStorage.setItem('site-theme', name);
+    }
+
+    // Initialize
+    applyTheme(initialTheme);
+
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+    });
+
+    /* ===== Render timetable cards ===== */
+    const grid = document.getElementById('timetableGrid');
+
     function esc(s){
       return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;'}[m]));
     }
 
-    const grid = document.getElementById('timetableGrid');
-
-    timetables.forEach(item => {
-      const file = esc(item.file);
-      const label = esc(item.label);
-
-      // Create card element
-      const card = document.createElement('article');
-      card.className = 'card';
-      card.innerHTML = `
-        <div>
-          <div class="month">${label}</div>
-          <div class="tagline">Official PDF timetable — view or download</div>
-        </div>
-
-        <div class="actions">
-          <!-- View button: open in new tab -->
-          <a class="btn-circle btn-view" href="${file}" target="_blank" rel="noopener noreferrer" aria-label="View ${label} timetable">
-            <!-- eye / document icon -->
-            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M12 5c5 0 9 5 9 7s-4 7-9 7-9-5-9-7 4-7 9-7z" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="12" cy="12" r="2.5" fill="#fff"/>
-            </svg>
-          </a>
-
-          <!-- Download button -->
-          <a class="btn-circle btn-download" href="${file}" download aria-label="Download ${label} timetable">
-            <!-- download icon -->
-            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M12 3v12" stroke="#002f4b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M8 11l4 4 4-4" stroke="#002f4b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M5 21h14" stroke="#002f4b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-
-          <!-- Optional labels (hidden on small screens) -->
-          <div class="btn-labels" aria-hidden="true">
-            <div class="btn-text">View</div>
-            <div class="btn-sub">Open in browser</div>
-          </div>
-        </div>
-      `;
-
-      grid.appendChild(card);
-    });
-
-    // Accessibility: if there are no timetables, show placeholder message
-    if (timetables.length === 0){
+    if (timetables.length === 0) {
       const empty = document.createElement('div');
       empty.textContent = 'No timetables available yet.';
       empty.style.padding = '28px';
-      empty.style.color = '#274957';
+      empty.style.color = 'var(--text)';
       grid.appendChild(empty);
+    } else {
+      timetables.forEach(item => {
+        const file = esc(item.file);
+        const label = esc(item.label);
+
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = `
+          <div>
+            <div class="month">${label}</div>
+            <div class="tagline">Official PDF timetable — view or download</div>
+          </div>
+
+          <div class="actions">
+            <a class="btn-circle btn-view" href="${file}" target="_blank" rel="noopener noreferrer" aria-label="View ${label} timetable">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M12 5c5 0 9 5 9 7s-4 7-9 7-9-5-9-7 4-7 9-7z" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="2.5" fill="#fff"/>
+              </svg>
+            </a>
+
+            <a class="btn-circle btn-download" href="${file}" download aria-label="Download ${label} timetable">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M12 3v12" stroke="#3E3E63" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 11l4 4 4-4" stroke="#3E3E63" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 21h14" stroke="#3E3E63" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+
+            <div class="btn-labels" aria-hidden="true">
+              <div class="btn-text">View</div>
+              <div class="btn-sub">Open in browser</div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
     }
   </script>
 </body>
 </html>
+```
