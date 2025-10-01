@@ -1,4 +1,4 @@
-<!doctype html>
+  <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -11,20 +11,21 @@
   <meta name="description" content="Sailing Timetables - monthly PDF timetables">
 
   <style>
-    /* ===== Theme tokens (palette: White, Purple #3E3E63, Pink #C5388C, Gold #DEA92C) ===== */
+    /* Light-theme tokens (use purple accents while keeping surfaces white) */
     :root{
-      --bg: #ffffff;
-      --surface: #ffffff;
-      --muted-bg: #fbfbff;
-      --text: #3E3E63;      /* purple */
-      --accent: #C5388C;    /* pink */
-      --gold: #DEA92C;      /* gold */
+      --bg: #ffffff;                   /* page surface remains white */
+      --surface: #ffffff;              /* card surface stays white for contrast */
+      --muted-bg: linear-gradient(180deg, rgba(62,62,99,0.04), rgba(255,255,255,0.0)); /* subtle purple wash at top */
+      --text: #3E3E63;                 /* purple text */
+      --accent: #C5388C;               /* pink accent */
+      --gold: #DEA92C;                 /* gold */
       --card-radius: 12px;
       --btn-size: 48px;
       --shadow: 0 10px 26px rgba(62,62,99,0.08);
       --transition: 220ms cubic-bezier(.2,.9,.3,1);
       color-scheme: light;
     }
+
 
     /* Dark theme tokens: purple background requested */
     :root[data-theme="dark"]{
