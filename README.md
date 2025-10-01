@@ -8,5 +8,5 @@ Created and maintained by **MillsJ09**.
 ## All rights reserved
 This design and its contents may not be copied, used, modified, or distributed without prior permission from **MillsJ09**.  
 
-## 
+### Notice
 *We are in no way affiliated with Condor Limited, Brittany Ferries, or any of their subsidiaries. We are a fan-group recreating virtual sailings in Roblox.*
